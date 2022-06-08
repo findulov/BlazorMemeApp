@@ -1,0 +1,63 @@
+﻿@page "/add-meme"
+@using MemeApp.Blazor.Common.Services;
+@inject IMemeApiService MemeApiService
+@inject NavigationManager NavigationManager
+
+<h3>Add New Meme</h3>
+<hr />
+
+<EditForm Model="@createMemeModel" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit" class="add-meme-form">
+    <DataAnnotationsValidator />
+    @*<ValidationSummary />*@
+
+    <div class="row">
+        <div class="col-md-4 form-element">
+            <InputText @bind-Value="createMemeModel.Title" class="form-control" placeholder="Title *" />
+            <ValidationMessage For="() => createMemeModel.Title" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 form-element">
+            <InputText @bind-Value="createMemeModel.Url" class="form-control" placeholder="Url *" />
+            <ValidationMessage For="() => createMemeModel.Url" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 form-element">
+            <InputText @bind-Value="createMemeModel.Author" class="form-control" placeholder="Author *" />
+            <ValidationMessage For="() => createMemeModel.Author" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 form-element">
+            <InputCheckbox @bind-Value="createMemeModel.IsNotSafeForWork" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 form-element">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private CreateMemeModel createMemeModel = new();
+
+    private async Task HandleValidSubmit()
+    {
+        Console.WriteLine("Form is valid!");
+
+        await MemeApiService.CreateMemeAsync(createMemeModel);
+
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        Console.WriteLine("Form is NOT valid!");
+    }
+}

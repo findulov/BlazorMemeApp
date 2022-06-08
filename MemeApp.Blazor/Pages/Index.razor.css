@@ -1,0 +1,13 @@
+﻿.card {
+    margin-bottom: 20px;
+    -webkit-box-shadow: 5px 5px 14px 5px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 14px 5px rgba(0,0,0,0.5);
+}
+
+.card hr {
+    margin-top: 0px;
+}
+
+.meme-preview-link-img {
+    width: 100%;
+}

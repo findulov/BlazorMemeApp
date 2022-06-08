@@ -1,0 +1,58 @@
+﻿@page "/"
+@using MemeApp.Blazor.Common.Services
+@inject IMemeApiService MemeApiService
+
+<PageTitle>Memes Blazor WebAssembly App</PageTitle>
+
+<h4 class="text-center">Welcome to the best memes app :D</h4>
+<hr />
+
+@if (memes == null)
+{
+    <em>Please wait... loading cool stuff!</em>
+}
+else
+{
+    <div class="row">
+        @foreach (var meme in memes)
+        {
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="text-center fw-bold">@meme.Title</div>
+                        <hr />
+                    </div>
+                    <div class="card-body">
+                        @{
+                            var previewLink = @meme.PreviewLinks.LastOrDefault();
+                        }
+
+                        @if (previewLink != null)
+                        {
+                            <a href="@previewLink.Url" target="_blank">
+                                <img class="meme-preview-link-img" src="@previewLink.Url" />
+                            </a>
+                        }
+                        <hr />
+                        @if (!string.IsNullOrEmpty(meme.PostLink))
+                        {
+                            <label>Reddit post: <a target="_blank" href="@meme.PostLink">@meme.PostLink</a></label>
+                            <span class="oi oi-thumb-up"></span> @meme.RedditPostLikes
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IEnumerable<MemeModel>? memes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        memes = await MemeApiService.GetAllMemesAsync();
+    }
+}
