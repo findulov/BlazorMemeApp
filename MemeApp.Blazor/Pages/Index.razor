@@ -2,6 +2,7 @@
 @using MemeApp.Blazor.Common.Services
 @inject IMemeApiService MemeApiService
 @inject IJSRuntime JS
+@inject StateContainer StateContainer
 
 <PageTitle>Memes Blazor WebAssembly App</PageTitle>
 
@@ -58,6 +59,8 @@ else
         await base.OnInitializedAsync();
 
         memes = await MemeApiService.GetAllMemesAsync();
+
+        StateContainer.MemeCount = memes.Count();
     }
 
     private async Task DeleteMemeAsync(MemeModel meme)
@@ -65,5 +68,7 @@ else
         Console.WriteLine($"About to delete '{meme.Title}'");
         bool isDeleteConfirmed = await JS.InvokeAsync<bool>("confirmDelete", meme.Title);
         Console.WriteLine($"Is delete happening? {isDeleteConfirmed}");
+
+        StateContainer.MemeCount = memes.Count() - 1;
     }
 }

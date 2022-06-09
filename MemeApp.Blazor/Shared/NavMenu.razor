@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@implements IDisposable
+@inject StateContainer StateContainer
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">MemeApp.Blazor</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -19,11 +22,26 @@
                 <span class="oi oi-plus" aria-hidden="true"></span> Add Meme
             </NavLink>
         </div>
+        <div class="nav-item px-3">
+            <label style="color: #fff">
+            <span class="oi oi oi-bell" aria-hidden="true"></span> Meme count (@StateContainer.MemeCount)
+            </label>
+        </div>
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool collapseNavMenu = true; 
+    
+    protected override void OnInitialized()
+    {
+        StateContainer.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        StateContainer.OnChange -= StateHasChanged;
+    }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
