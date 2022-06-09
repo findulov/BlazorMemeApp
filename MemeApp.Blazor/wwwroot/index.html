@@ -21,6 +21,12 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+
+    <script>
+        function confirmDelete(memeTitle) {
+            return confirm("Are you sure you want to delete '" + memeTitle + "'?");
+        }
+    </script>
 </body>
 
 </html>

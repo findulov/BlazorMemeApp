@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using MemeApp.Blazor.Common.Services
 @inject IMemeApiService MemeApiService
+@inject IJSRuntime JS
 
 <PageTitle>Memes Blazor WebAssembly App</PageTitle>
 
@@ -19,7 +20,10 @@ else
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-title">
-                        <div class="text-center fw-bold">@meme.Title</div>
+                        <div class="text-center fw-bold">
+                            <span>@meme.Title</span>
+                            <span class="oi oi-circle-x float-end pointer" @onclick="async () => await DeleteMemeAsync(meme)"></span>
+                        </div>
                         <hr />
                     </div>
                     <div class="card-body">
@@ -54,5 +58,12 @@ else
         await base.OnInitializedAsync();
 
         memes = await MemeApiService.GetAllMemesAsync();
+    }
+
+    private async Task DeleteMemeAsync(MemeModel meme)
+    {
+        Console.WriteLine($"About to delete '{meme.Title}'");
+        bool isDeleteConfirmed = await JS.InvokeAsync<bool>("confirmDelete", meme.Title);
+        Console.WriteLine($"Is delete happening? {isDeleteConfirmed}");
     }
 }

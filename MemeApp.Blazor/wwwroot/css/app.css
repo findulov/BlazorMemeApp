@@ -66,3 +66,11 @@ a, .btn-link {
 .add-meme-form .form-element {
     margin-bottom: 20px !important;
 }
+
+.oi-circle-x {
+    color: #b32121;
+}
+
+.pointer {
+    cursor: pointer !important;
+}

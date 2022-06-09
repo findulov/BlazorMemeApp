@@ -1,4 +1,5 @@
 ﻿using MemeApp.Shared.Models;
+using System.Text;
 using System.Text.Json;
 
 namespace MemeApp.Blazor.Common.Services
@@ -31,7 +32,7 @@ namespace MemeApp.Blazor.Common.Services
         {
             var httpResponse = await httpClient.PostAsync(
                 $"{Constants.ApiBaseUrl}/memes/create",
-                new StringContent(JsonSerializer.Serialize(meme)));
+                new StringContent(JsonSerializer.Serialize(meme), Encoding.UTF8, "application/json"));
 
             // TODO: do something with the response
         }
